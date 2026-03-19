@@ -9,7 +9,7 @@ import joblib
 # Load the dataset
 
 # Assuming the dataset is in CSV format and located at the specified path
-data = pd.read_csv("dataset/StudentPerformanceFactors.csv")  # Replace with your actual file name
+data = pd.read_csv("data/raw/StudentPerformanceFactors.csv")  # Replace with your actual file name
 
 target = "Exam_Score" #Colume ที่ต้องการทำนาย
 
