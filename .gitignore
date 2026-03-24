@@ -1,4 +1,2 @@
 data/processed
 data/raw
-models/**/*.pkl
-models/**/*.pth
