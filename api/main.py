@@ -10,9 +10,10 @@ from PIL import Image
 app = FastAPI()
 
 # 1. Setup Device & Paths
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cpu")  # ⭐ บน Render ใช้ CPU เท่านั้น
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "catordog_nn.pth")
+MODEL_PATH = os.path.join(BASE_DIR, "catordog_nn.pth")  
 
 # 2. Model Definition
 class SimpleCNN(nn.Module):
@@ -21,7 +22,7 @@ class SimpleCNN(nn.Module):
         self.conv1 = nn.Conv2d(3, 16, 3, padding=1)
         self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
         self.pool = nn.MaxPool2d(2, 2)
-        # 128x128 -> 64x64 -> 32x32. Final: 32 channels * 32 * 32
+
         self.fc1 = nn.Linear(32 * 32 * 32, 128) 
         self.fc2 = nn.Linear(128, 2)
 
@@ -33,8 +34,9 @@ class SimpleCNN(nn.Module):
         x = self.fc2(x)
         return x
 
-# 3. Load Model (Once)
+# 3. Load Model
 model = SimpleCNN()
+
 if not os.path.exists(MODEL_PATH):
     raise FileNotFoundError(f"Model file not found at: {MODEL_PATH}")
 
@@ -60,8 +62,10 @@ def root():
 async def predict(file: UploadFile = File(...)):
     try:
         contents = await file.read()
+        image = Image.open(io.BytesIO(contents))
+        image.verify()  # เช็คว่าเป็นรูป
         image = Image.open(io.BytesIO(contents)).convert("RGB")
-        
+
         img = transform(image).unsqueeze(0).to(device)
 
         with torch.no_grad():
@@ -73,5 +77,6 @@ async def predict(file: UploadFile = File(...)):
             "class": class_names[pred.item()],
             "confidence": round(float(conf.item()), 4)
         }
+
     except Exception as e:
         return {"error": str(e)}
