@@ -9,7 +9,7 @@
 ## สารบัญ
 - [ การติดตั้ง ]( #installation ) 
 - [ การใช้งาน ]( #usage ) 
-## การติดตั้ง
+## Installation
 
 To deploy this project run
 
@@ -52,13 +52,11 @@ https://filter-quality-ai.onrender.com
 
 **Interactive API Docs:**  
 https://filter-quality-ai.onrender.com/docs
+
+## Usage
+---
 ## API Reference
 
-#### Get all items
-
-```http
-  GET /api/items
-```
 
 | Parameter | Type     |Required | Description                |
 | :-------- | :------- |:--------|:------------------------- |
