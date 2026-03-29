@@ -1,0 +1,8 @@
+venv/
+data/
+*.log
+.git/
+__pycache__/
+*.pt
+*.pth
+*.h5
